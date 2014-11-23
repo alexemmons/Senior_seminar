@@ -56,7 +56,7 @@ The two main steps of automatic chord recognition are feature extraction and pat
 
 There are many challenges encountered by systems that process audio signals. There are background noises, percussion instruments, and other unwanted tones in audio recordings. It is also difficult to distinguish when chords change and to line these points up exactly with the beat. Preprocessing helps eliminate unwanted information from the audio files before or during the feature extraction step, depending on the system. An overview of one of the chord recognition systems looked at in this paper can be seen in Figure~\ref{fig:fig2}.
 
-Chord recognition systems have been improving and becoming more usable in recent years. This paper will compare three different systems that use a variety of techniques in each step of the process. By looking at the components of the highest performing systems, we will determine the most effective methods used for each step of the process. 
+Chord recognition systems have been improving and becoming more usable in recent years. This paper will compare three different systems that use a variety of techniques in each step of the process. By looking at the components of the highest performing systems, we will determine the most effective methods used in each step. 
 
 \begin{figure*}
 \centering
@@ -70,11 +70,13 @@ In order to explain the process of automatic chord recognition, some general inf
 
 \subsection{Feature Extraction}
 
-The first step of generating a chord progression from audio data is processing the signal to extract harmonic features. Feature extraction is a fairly simple process, but can be made more complex by introducing optimization steps to increase accuracy \cite{McVicar:2014}. Preprocessing is one of these steps, performed before calculating \textit{Pitch Class Profile} (PCP), which is a representation what notes are present over time.
+The first step of generating a chord progression from audio data is processing the signal to extract harmonic features. Feature extraction is a fairly simple process, but can be made more complex by introducing optimization steps to increase accuracy \cite{McVicar:2014}. Preprocessing is one of these steps, performed before generating \textit{Pitch Class Profile} (PCP), which is a representation what notes are present over time.
 
 \subsubsection{Preprocessing}
 
-In Figure~\ref{fig:fig4} the light areas show where frequencies have been detected, and the dark areas show empty space. It is clear that frequencies other than just the chord tones have been detected because the light areas are not solid white and the dark areas not solid black. The goal of preprocessing is to reduce as much of this background noise as possible from the audio file, in an effort to provide a smooth and clear PCP. Depending on the audio resolution, very low pitches can be hard to distinguish and tend to blur across multiple pitches. Percussion sounds also need to be addressed, especially those that create a pitch such as a bass drum.
+In Figure~\ref{fig:fig4} the light areas show where frequencies have been detected, and the dark areas show empty space. It is clear that frequencies other than just the chord tones have been detected because the light areas are not solid white and the dark areas not solid black. The goal of preprocessing is to reduce as much of this background noise as possible from the audio file, in an effort to provide a smooth and clear PCP. 
+
+%Depending on the audio resolution, very low pitches can be hard to distinguish and tend to blur across multiple pitches. Percussion sounds also need to be addressed, especially those that create a pitch such as a bass drum.
 
 Another issue is that musical instruments produce a series of harmonics at higher and lower frequencies than the tone that is played. These tones, called overtones, can confuse feature extraction techniques and need to be removed.
 
@@ -91,7 +93,7 @@ The pitch of a note is measured in two dimensions - height and chroma (pitch cla
 \begin{figure}
 \centering
 \psfig{file=fig4.pdf,width =3in}
-\caption{A typical chromagram, or PCP, generated from the opening to \textit{Let It Be} (Lennon/McCartney). Pitch class (chroma) at time t is shown by the intensity or lightness at that point. The true chord progression (simplified) is shown above for comparison.}
+\caption{A typical chromagram, or PCP, generated from the opening to \textit{Let It Be} (Lennon/McCartney). Pitch class (chroma) at time t is shown by the intensity, or lightness at that point. The true chord progression (simplified) is shown above for comparison.}
 \label{fig:fig4}
 \end{figure}
 
@@ -126,32 +128,36 @@ This paper looks at three research cases that involve automatic chord recognitio
 
 \subsection{Case 1: Effects of Proper Signal Processing}
 
-The first study~\cite{Morman:2006} uses a chord recognition system that begins with a preprocessing block, followed by feature extraction, where PCP is calculated. After this, the signal is segmented along predicted chord boundaries, and then chord labels are assigned to each segment. An overview of this system can been seen in Figure~\ref{fig:fig2}~\cite{Morman:2006}. 
+The first study~\cite{Morman:2006} uses a chord recognition system that begins with a preprocessing block, followed by feature extraction, where PCP is calculated. After this, the signal is segmented along predicted chord boundaries, and then chord labels are assigned to each segment. An overview of this system can been seen in Figure~\ref{fig:fig2}. 
 
 There are two stages in the preprocessing block, to address background noise and overtones. The first step, Homomorphic Liftering, is a method of separating out the frequencies of musical tones from background and system noise. This is done by finding strong frequency peaks in areas corresponding to the pitch range of the notes. Frequencies above and below a specified range can also be removed to reduce noise. The second step, known as the \textit{Harmonic Product Spectrum} (HPS), is a method which emphasizes frequencies when their overtones are present. HPS is calculated by compressing the spectrum by factors of 1 to R and multiplying the resulting compressed spectra. The resulting output energy is then summed according to pitch class and a PCP is created.
 
 The first step of pattern matching for this system is chord segmentation, where the audio signal is segmented at the boundaries where chords change. This can be difficult because some chords are not played all at once, the notes are played in sequence and held. To find the points where change has occurred the PCP is analyzed frame-by-frame to find significant change in pitch-class content. 
 
-The next and final step is assigning chord labels to the segments. Given an instance of the PCP for a region of the audio, the most probable chord label is picked from a set of training PCPs. In this study the use of GMMs and SVMs is compared.
+%FV1 doesn't use PCP
+
+The next and final step in this system is assigning chord labels to the segments. Given an instance of the PCP for a region of the audio, the most probable chord label is picked from a set of training PCPs. In this study the use of GMMs and SVMs is compared~\cite{Morman:2006}.
 
 \subsubsection{Datasets}
 
-In this experiment \textit{MIDI} (Musical Instrument Digital Interface) recordings were used to create time aligned labelled audio. Two datasets were used: one of isolated chords synthesized on piano and strings, and one of continuous single-instrument audio synthesized on piano. 
+In this experiment \textit{MIDI} (Musical Instrument Digital Interface) recordings were used to create time aligned labeled audio. Two datasets were used: one of isolated chords synthesized on piano and strings, and one of continuous single-instrument audio synthesized on piano. 
 
-The isolated chord dataset consisted of 7790 chords and inversions, where the notes are stacked in a different order. Three chord complexity levels were tested, labelled DS1, DS2, and DS3. The first involved the common triad types (major, minor, augmented, and diminished), the second included variations of the 7th chord (major 7th, minor 7th, dominant 7th, fully diminished 7th, and half diminished 7th), and in the third all 11 different chord types that the system could recognize were used.\todo[inline]{Need to somehow name these and reference them as DS1,2,3 in table.} This can be seen in Table~\ref{tab:tab1}. Four feature vectors (FV), or models were used for comparison on each of these datasets, which can be seen in Table~\ref{tab:tab2}. The first model started with preprocessing using homomorphic liftering and harmonic product spectrum. FV2 has a low sampling rate and no preprocessing, FV3 increases the sample rate and FFT length, and FV4 first preprocessed the signal and then used the same homomorphic processing and HPS as FV1.
+The isolated chord dataset consisted of 7790 chords and inversions, where the notes are stacked in a different order. Three chord complexity levels were tested, labeled DS1, DS2, and DS3 (seen in Table~\ref{tab:tab1}). DS1 involved the four common triad types (major, minor, augmented, and diminished), across all roots. All other chords were not used. DS2 included variations of the 7th chord (major 7th, minor 7th, dominant 7th, fully diminished 7th, and half diminished 7th), and in DS3 all 11 different chord types that the system could recognize were used.
 
-\todo[inline]{Need more info here. Decide between using FV and model. Define liftering HPS and alot of other things. Explain table 2 and use the same terminology here.}
+Four \textit{Feature Vectors}~(FV), or combinations of methods used for feature extraction, were compared on each of these complexity levels, seen in Table~\ref{tab:tab2}. FV1 started with preprocessing using homomorphic liftering with a lower cutoff of 30Hz and upper frequency cutoff of 4kHz, then computing HPS with a compression ratio R = 5. Instead of PCP, in this case an 84 dimensional vector was used (representing 7 octaves with 12 notes per octave). The hypothesis was that this would provide more information because the octaves weren't flattened down to one. FV2 had a lower sampling rate and \textit{Fast Fourier Transform}~(FFT) length, and no preprocessing was performed on the audio signal. This was to match a previous system that they were comparing against. FV3 increases the sample rate and FFT, but still leaves out preprocessing. FV4 introduces preprocessing using the same homomorphic liftering and HPS as FV1.
 
-The continuous single-instrument audio dataset consisted of 50 hymn verses selected from the Trinity Hymnal, with 40 used for training and 10 used for testing. FV4 was used from the isolated chord experiment \cite{Morman:2006}. 
+%\todo[inline]{Need more info here. Define/name column headers. Explain table 2 and use the same terminology here.}
+
+The continuous single-instrument audio dataset consisted of 50 hymn verses selected from the Trinity Hymnal, with 40 used for training and 10 used for testing. FV4 was used from the isolated chord experiment \cite{Morman:2006}.
 
 %In the experiments two pattern recognition methods are compared: GMMs and Support Vector Machines (SVM). For SVM classification, the OSU SVM Classifier MATLAB Toolbox was used. 
 
-\todo[inline]{Explain SVM in a separate section or leave out.}
+%\todo[inline]{Explain SVM in a separate section or leave out.}
 
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|} \hline
-&\multicolumn{3}{|c|}{Label used in:} \\ \hline
+&\multicolumn{3}{|c|}{Label given in:} \\ \hline
 Chord Label & DS1A & DS1B & DS1C \\ \hline
 Major & Major & Major & Major \\ \hline
 Minor & Minor & Minor & Minor \\ \hline
@@ -165,14 +171,14 @@ Augmented & Aug. & Aug. & Augmented \\ \hline
 Sus. 4 & - & - & Sus. 4 \\ \hline
 7 Sus. 4 & - & - & 7 Sus. 4 \\ \hline
 \end{tabular}
-\caption{Labels used for isolated chord data.}
+\caption{Chord complexity levels used in \cite{Morman:2006}.}
 \label{tab:tab1}
 \end{table} 
 
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|c|c|} \hline
- & Type & Sampling Rate & FFT Ln. & Lifter & HPS R \\ \hline
+ & Type & Sample Rate & FFT Length & Lifter & HPS Ratio \\ \hline
 FV1 & FB & 44100 & 32768 & yes & 5 \\ \hline
 FV2 & PCP & 11025 & 4096 & no & 1 \\ \hline
 FV3 & PCP & 44100 & 32768 & no & 1 \\ \hline
@@ -184,11 +190,9 @@ FV4 & PCP & 44100 & 32768 & yes & 5 \\ \hline
 
 \subsubsection{Results}
 
-For the isolated chords dataset, this system was trained using chords synthesized on a piano, and was tested on chords synthesized on both piano and strings. The dataset was randomly divided with 80\% of the chords used for training and 20\% for testing. Five of these training and testing sets were created and the recognition rates from these were averaged. The overall chord recognition accuracies for piano can be seen in table~\ref{tab:tab3} and for strings in table~\ref{tab:tab4}. FV4 performed the best with the chords played on strings, and showed the least difference between recognizing piano and string chords \cite{Morman:2006}.
+For the isolated chords dataset, this system was trained using chords synthesized on a piano, and was tested on chords synthesized on both piano and strings. The dataset was randomly divided with 80\% of the chords used for training and 20\% for testing. Five of these training and testing sets were created and the recognition rates from these were averaged. The overall chord recognition accuracies for GMMs can be seen in table~\ref{tab:tab3} and for piano, and in table~\ref{tab:tab4} for strings. FV4 performed the best with the chords played on strings, and showed the least difference between recognizing piano and string chords \cite{Morman:2006}. The results of classification using SVMs can be seen in Table~\ref{tab:tab7}. Using SVMs clearly outperformed GMMs, with accuracy rates up to 95\% on DS1A. This was not the case however, when SVMs were tested on strings when trained on piano. In this case SVMs actually did not work because an SVM requires knowledge of the type of data in the testing set, so these results were not included.  
 
-For the continuous single-instrument dataset, only FV4 was used.
-
-\todo[inline]{Need to add results of the continuous single-instrument dataset.}
+For the continuous single-instrument dataset, two parameters of chord segmentation were compared; the number of scatter points (7 scatter points means the partition frame plus 3 frames on each side), and the window length in seconds. As shown in Table~\ref{tab:tab8}, segmentation accuracy of around 90\% was achieved. Melody tones that were not part of the chord made this more difficult than labeling the isolated chords~\cite{Morman:2006}. 
 
 \begin{table}
 \centering
@@ -216,11 +220,36 @@ FV4 & 86.94 & 80.23 & 80.18 \\ \hline
 \label{tab:tab4}
 \end{table}
 
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|} \hline
+Feature Vector & DS1A & DS1B & DS1C \\ \hline
+FV1 & 93.43 & 88.21 & 86.52 \\ \hline
+FV2 & 94.78 & 93.26 & 93.13 \\ \hline
+FV3 & 95.23 & 94.31 & 94.24 \\ \hline
+FV4 & 90.56 & 88.08 & 87.74 \\ \hline
+\end{tabular}
+\caption{Isolated chord recognition accuracy using SVM, training set: piano, testing set: piano.}
+\label{tab:tab7}
+\end{table}
 
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|} \hline
+&\multicolumn{4}{|c|}{Number of Scatter Points} \\ \hline
+Window Length (s) & 3 & 5 & 7 & 9 \\ \hline
+0.025 & 55.74 & 96.40 & 69.67 & 73.77 \\ \hline
+0.050 & 66.12 & 84.70 & 88.25 & 85.25 \\ \hline
+0.100 & 68.31 & 87.98 & 90.44 & 90.16 \\ \hline
+0.200 & 68.31 & 87.98 & 90.44 & 90.44 \\ \hline
+\end{tabular}
+\caption{Continuous single-instrument segmentation accuracy with varying scatter points and window lengths.}
+\label{tab:tab8}
+\end{table}
 
 \subsection{Case 2: HMM with Audio From Symbolic Data}
 
-The next study \cite{Lee:2006} uses a supervised HMM trained with audio from symbolic data.\todo[inline]{Supervised and audio from symbolic data is not defined.} The system used here begins with feature extraction, again using PCP. At the same time, chord label data is generated from the MIDI data that was used to generate the audio. This data is used to train a 36-state HMM \cite{Lee:2006}. These 36 states represent 36 chords - major, minor, and diminished for each 12 notes. The system is trained on a dataset, and then fed a separate dataset for testing and analysis.
+In the next study \cite{Lee:2006}, the system begins with feature extraction, which is represented again using PCP. At the same time, chord label data is generated from the MIDI data that was used to generate the audio. This data is used to train a 36-state HMM \cite{Lee:2006}. These 36 states represent 36 chords - major, minor, and diminished for each 12 notes. The system is trained on a dataset, and then fed a separate dataset for testing and analysis.
 
 \todo[inline]{Need transition here.}
 
