@@ -97,6 +97,18 @@ The pitch of a note is measured in two dimensions - height and chroma (pitch cla
 \label{fig:fig4}
 \end{figure}
 
+\begin{table*}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|} \hline
+ & \textbf{Type} & \textbf{Sample Rate} & \textbf{FFT Length} & \textbf{Lifter} & \textbf{HPS Ratio} \\ \hline
+\textbf{FV1} & FB & 44100 & 32768 & yes & 5 \\ \hline
+\textbf{FV2} & PCP & 11025 & 4096 & no & 1 \\ \hline
+\textbf{FV3} & PCP & 44100 & 32768 & no & 1 \\ \hline
+\textbf{FV4} & PCP & 44100 & 32768 & yes & 5 \\ \hline
+\end{tabular}
+\caption{Feature Vectors used in isolated chord recognition.}
+\label{tab:tab2}
+\end{table*} 
 
 \subsection{Pattern Matching}
 
@@ -108,7 +120,7 @@ Almost all chord recognition systems use PCP or some other chroma-based feature 
 
 \subsubsection{Hidden Markov Models}\label{main} 
 
-A \textit{hidden Markov model} (HMM) is a statistical model which describes a finite set of states, in this case chords, each with a probability distribution. Transitions between these states are governed by a set of transition probabilities that describe the likelihood of transitioning from one to another \cite{TaeMin:2014}. HMMs are used in a wide variety of pattern recognition environments such as speech, handwriting, and gesture recognition, as well as in bioinformatics. 
+A \textit{hidden Markov model} (HMM) is a statistical model which describes a finite set of states, in this case chords. Transitions between these states are governed by a set of transition probabilities that describe the likelihood of transitioning from one to another \cite{TaeMin:2014}. The Viterbi algorithm then finds the most likely sequence by evaluating the joint probability of the output and all possible chord sequences. HMMs are used in a wide variety of pattern recognition environments such as speech, handwriting, and gesture recognition, as well as in bioinformatics. 
 
 \todo[inline]{Need to re-write this section from draft. Include figures for models. find first instance of HMM.}
 
@@ -157,8 +169,8 @@ The continuous single-instrument audio dataset consisted of 50 hymn verses selec
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|} \hline
-&\multicolumn{3}{|c|}{Label given in:} \\ \hline
-Chord Label & DS1A & DS1B & DS1C \\ \hline
+&\multicolumn{3}{|c|}{\textbf{Label given in:}} \\ \hline
+\textbf{Chord Label} & \textbf{DS1A} & \textbf{DS1B} & \textbf{DS1C} \\ \hline
 Major & Major & Major & Major \\ \hline
 Minor & Minor & Minor & Minor \\ \hline
 Major 7 & - & Major & Major 7 \\ \hline
@@ -175,18 +187,7 @@ Sus. 4 & - & - & Sus. 4 \\ \hline
 \label{tab:tab1}
 \end{table} 
 
-\begin{table}
-\centering
-\begin{tabular}{|c|c|c|c|c|c|} \hline
- & Type & Sample Rate & FFT Length & Lifter & HPS Ratio \\ \hline
-FV1 & FB & 44100 & 32768 & yes & 5 \\ \hline
-FV2 & PCP & 11025 & 4096 & no & 1 \\ \hline
-FV3 & PCP & 44100 & 32768 & no & 1 \\ \hline
-FV4 & PCP & 44100 & 32768 & yes & 5 \\ \hline
-\end{tabular}
-\caption{Feature Vectors used in isolated chord recognition.}
-\label{tab:tab2}
-\end{table} 
+
 
 \subsubsection{Results}
 
@@ -197,65 +198,67 @@ For the continuous single-instrument dataset, two parameters of chord segmentati
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|} \hline
-Feature Vector & DS1A & DS1B & DS1C \\ \hline
-FV1 & 83.68 & 61.85 & 57.24 \\ \hline
-FV2 & 90.33 & 82.44 & 82.26 \\ \hline
-FV3 & 91.76 & 84.20 & 84.09 \\ \hline
-FV4 & 85.64 & 79.40 & 78.93 \\ \hline
+\textbf{Feature Vector} & \textbf{DS1A} & \textbf{DS1B} & \textbf{DS1C} \\ \hline
+\textbf{FV1} & 83.68 & 61.85 & 57.24 \\ \hline
+\textbf{FV2} & 90.33 & 82.44 & 82.26 \\ \hline
+\textbf{FV3} & \textbf{91.76} & 84.20 & 84.09 \\ \hline
+\textbf{FV4} & 85.64 & 79.40 & 78.93 \\ \hline
 \end{tabular}
-\caption{Isolated chord recognition accuracy using GMM, training set: piano, testing set: piano.}
+\caption{Isolated chord recognition accuracy using GMM, training set: piano, testing set: piano~\cite{Morman:2006}.}
 \label{tab:tab3}
 \end{table} 
 
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|} \hline
-Feature Vector & DS1A & DS1B & DS1C \\ \hline
-FV1 & 68.06 & 42.00 & 33.62 \\ \hline
-FV2 & 42.72 & 18.60 & 16.30 \\ \hline
-FV3 & 43.49 & 22.00 & 18.31 \\ \hline
-FV4 & 86.94 & 80.23 & 80.18 \\ \hline
+\textbf{Feature Vector} & \textbf{DS1A} & \textbf{DS1B} & \textbf{DS1C} \\ \hline
+\textbf{FV1} & 68.06 & 42.00 & 33.62 \\ \hline
+\textbf{FV2} & 42.72 & 18.60 & 16.30 \\ \hline
+\textbf{FV3} & 43.49 & 22.00 & 18.31 \\ \hline
+\textbf{FV4} & \textbf{86.94} & 80.23 & 80.18 \\ \hline
 \end{tabular}
-\caption{Isolated chord recognition accuracy using GMM, training set: piano, testing set: strings.}
+\caption{Isolated chord recognition accuracy using GMM, training set: piano, testing set: strings~\cite{Morman:2006}.}
 \label{tab:tab4}
 \end{table}
 
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|} \hline
-Feature Vector & DS1A & DS1B & DS1C \\ \hline
-FV1 & 93.43 & 88.21 & 86.52 \\ \hline
-FV2 & 94.78 & 93.26 & 93.13 \\ \hline
-FV3 & 95.23 & 94.31 & 94.24 \\ \hline
-FV4 & 90.56 & 88.08 & 87.74 \\ \hline
+\textbf{Feature Vector} & \textbf{DS1A} & \textbf{DS1B} & \textbf{DS1C} \\ \hline
+\textbf{FV1} & 93.43 & 88.21 & 86.52 \\ \hline
+\textbf{FV2} & 94.78 & 93.26 & 93.13 \\ \hline
+\textbf{FV3} & \textbf{95.23} & 94.31 & 94.24 \\ \hline
+\textbf{FV4} & 90.56 & 88.08 & 87.74 \\ \hline
 \end{tabular}
-\caption{Isolated chord recognition accuracy using SVM, training set: piano, testing set: piano.}
+\caption{Isolated chord recognition accuracy using SVM, training set: piano, testing set: piano~\cite{Morman:2006}.}
 \label{tab:tab7}
 \end{table}
 
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|c|c|} \hline
-&\multicolumn{4}{|c|}{Number of Scatter Points} \\ \hline
-Window Length (s) & 3 & 5 & 7 & 9 \\ \hline
-0.025 & 55.74 & 96.40 & 69.67 & 73.77 \\ \hline
+&\multicolumn{4}{|c|}{\textbf{Number of Scatter Points}} \\ \hline
+\textbf{Window Length (s)} & \textbf{3} & \textbf{5} & \textbf{7} & \textbf{9} \\ \hline
+0.025 & 55.74 & 69.40 & 69.67 & 73.77 \\ \hline
 0.050 & 66.12 & 84.70 & 88.25 & 85.25 \\ \hline
-0.100 & 68.31 & 87.98 & 90.44 & 90.16 \\ \hline
-0.200 & 68.31 & 87.98 & 90.44 & 90.44 \\ \hline
+0.100 & 68.31 & 87.98 & \textbf{90.44} & 90.16 \\ \hline
+0.200 & 68.31 & 87.98 & \textbf{90.44} & \textbf{90.44} \\ \hline
 \end{tabular}
-\caption{Continuous single-instrument segmentation accuracy with varying scatter points and window lengths.}
+\caption{Continuous single-instrument segmentation accuracy with varying number of scatter points and window lengths~\cite{Morman:2006}.}
 \label{tab:tab8}
 \end{table}
 
-\subsection{Case 2: HMM with Audio From Symbolic Data}
+\subsection{Case 2: HMM Trained with Audio from Symbolic Data}
 
-In the next study \cite{Lee:2006}, the system begins with feature extraction, which is represented again using PCP. At the same time, chord label data is generated from the MIDI data that was used to generate the audio. This data is used to train a 36-state HMM \cite{Lee:2006}. These 36 states represent 36 chords - major, minor, and diminished for each 12 notes. The system is trained on a dataset, and then fed a separate dataset for testing and analysis.
+In the next study \cite{Lee:2006}, symbolic data in Humdrum data format is used to generate training data for an HMM. Humdrum is a software toolkit used for music research. The data is used to generate a chord label file (containing chord names and times), and an audio file, from the same data. Chroma analysis is then performed on the audio file to get a PCP, which is used as input to the trained HMM along with the chord label file. This system is visualized in Figure~\ref{fig:fig1}.
 
-\todo[inline]{Need transition here.}
+A 36-state HMM is used, with each state representing a chord (major, minor, and diminished for each 12 pitches). Once the model parameters are learned, the Viterbi algorithm is applied to find the optimal sequence in a maximum likelihood sense. 
 
-Using an ergodic model, which allows every possible transition from chord to chord, the model parameters are learned, and then the Viterbi algorithm is applied. The Viterbi algorithm finds the most likely path, or chord sequence, by restricting unlikely chord transitions \cite{TaeMin:2014}. Two elements are needed to train this model: chord label files, and audio data. In this case they are both being generated from the same symbolic data. See figure~\ref{fig:fig1} for a representation of this. The first step is to use a chord analysis tool to generate a file with complete chord information for a piece of music. Using the same symbolic data, the audio files are generated using a sample-based synthesizer. This audio data is in perfect sync with the chord label file, and simulates a real recording because it contains the overtones that would be generated from real instruments \cite{Lee:2006}.
+%At the same time, chord label data is generated from the MIDI data that was used to generate the audio. This data is used to train a 36-state HMM \cite{Lee:2006}. These 36 states represent 36 chords - major, minor, and diminished for each 12 notes. The system is trained on a dataset, and then fed a separate dataset for testing and analysis.
 
-\todo[inline]{Need to re-write from section draft! More on Viterbi.}
+%Using an ergodic model, which allows every possible transition from chord to chord, the model parameters are learned, and then the Viterbi algorithm is applied. The Viterbi algorithm finds the most likely path, or chord sequence, by restricting unlikely chord transitions \cite{TaeMin:2014}. Two elements are needed to train this model: chord label files, and audio data. In this case they are both being generated from the same symbolic data. See figure~\ref{fig:fig1} for a representation of this. The first step is to use a chord analysis tool to generate a file with complete chord information for a piece of music. Using the same symbolic data, the audio files are generated using a sample-based synthesizer. This audio data is in perfect sync with the chord label file, and simulates a real recording because it contains the overtones that would be generated from real instruments \cite{Lee:2006}.
+
+%\todo[inline]{Need to re-write from section draft! More on Viterbi.}
 
 \begin{figure}
 \centering
@@ -266,32 +269,36 @@ Using an ergodic model, which allows every possible transition from chord to cho
 
 \subsubsection{Datasets}
 
-The training data used for the first model in this case consisted of 81 solo piano pieces by J.S. Bach, Beethoven, and Mozart. For the second case 196 string quartet pieces by Beethoven, Haydn, and Mozart were used. The models were then tested on excerpts from the Kostka and Payne's book, which includes analysis and audio recordings done by the composers. 10 excerpts - 5 piano solos and 5 string quartets were selected, with no overlap of the training data. The output was compared to the hand-marked data for frame rate accuracy \cite{Lee:2006}. 
+Two training datasets were used: the first consisted of 81 solo piano pieces by J.S. Bach, Beethoven, and Mozart, and the second consisted of 196 string quartet pieces by Beethoven, Haydn, and Mozart. These models were then tested on excerpts from the Kostka and Payne's book, which includes analysis and audio recordings done by the composers. Two testing sets - five piano solos and five string quartets were selected, with no overlap of the training data. Both of these sets were tested using both of the training datasets, as well as third that consisted of the first two combined, resulting in six possible training - test pairs. The output was compared to the hand-marked data for frame rate accuracy \cite{Lee:2006}. 
 
 \subsubsection{Results}
 
-In this case there are two datasets, piano and strings, and each can be tested on a system that is trained with either piano or strings. So each combination was tested, in addition to testing on a system trained with both piano and strings. The results of these experiments can be seen in table~\ref{tab:tab5}.
+The results of these experiments can be seen in table~\ref{tab:tab5}. The recognition rate was highest for the combined training dataset, at 80\%, although the difference is not significant. Further analysis on the results showed that the highest error came from non-chord tones in the melody, especially in faster pieces. This is because the analysis window would span over multiple chord changes, which confused the system. Other issues were caused by the system treating 7th chords the same as triads because 7th chords contain two triads.
 
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|} \hline
-Training Data & Test Data & Recognition Rate \\ \hline
+\textbf{Training Data} & \textbf{Test Data} & \textbf{Recognition Rate} \\ \hline
 Piano & Piano & 68.69 \\ \hline
 String Quartet & Piano & 73.40 \\ \hline
-All & Piano & 74.41 \\ \hline
+Piano \& Strings & Piano & 74.41 \\ \hline
 Piano & String Quartet & 79.35 \\ \hline
 String Quartet & String Quartet & 79.76 \\ \hline
-All & String Quartet & 80.16 \\ \hline
+Piano \& Strings & String Quartet & 80.16 \\ \hline
 \end{tabular}
-\caption{Recognition results for HMM trained with audio from symbolic data.}
+\caption{Recognition results for all six possible training - test pairs in \cite{Lee:2006}.}
 \label{tab:tab5}
 \end{table}
 
 \subsection{Case 3: Importance of Individual Components}
 
-The final study \cite{TaeMin:2014} compares the most common methods of each step: feature extraction, pattern recognition, and pre/post filtering. This study describes the overall system a little differently than the other two, with preprocessing included in the feature extraction stage, and HMMs included in the post-filtering stage. The pre-filtering stage is where attempts are made to smooth out the PCP. 
+The final study~\cite{TaeMin:2014} consists of four experiments, testing different methods used for each step of the process. The overall recognition system in this case is defined as a feature extraction step and pattern matching step, with optional pre-filtering and post-filtering steps. An overview of the system can been seen in figure~\ref{fig:fig3}.  Pre-filtering is applied to PCPs directly before pattern matching, and consists of averaging frames between beats, yielding a beat-synchronized PCP. Post-filtering is performed after pattern matching, in the context of a HMM, typically using a Viterbi decoder.
 
-Four experiments were conducted in this study: Feature extraction and pattern matching, effect of pre-filtering, effect of post-filtering, and combined pre- and post-filtering. Each experiment was run on 495 chord annotated pop songs. An overview of the system can been seen in figure~\ref{fig:fig3}.
+%The final study \cite{TaeMin:2014} compares the most common methods of each step: feature extraction, pattern recognition, and pre/post filtering. This study describes the overall system a little differently than the other two, with preprocessing included in the feature extraction stage, and HMMs included in the post-filtering stage. The pre-filtering stage is where attempts are made to smooth out the PCP. 
+
+%Four experiments were conducted in this study: Feature extraction and pattern matching, effect of pre-filtering, effect of post-filtering, and combined pre- and post-filtering. Each experiment was run on 495 chord annotated pop songs. 
+
+%In the first experiment, different combinations of feature extraction and pattern matching are compared to show whether or not model complexity affects performance of the system. They also test the effect of different types of chroma features. The second experiment looks at the pre-filtering techniques of moving filters and beat-synchronization. \todo[inline]{Need to define these and provide more here.} The effect of post-filtering experiment compares the use of different stochastic models. The final experiment uses pre- and post-filtering and again looks at moving filters and beat-synchronization.
 
 \todo[inline]{decide between chord-annotated and hand marked or define difference.}
 
@@ -306,7 +313,7 @@ Four experiments were conducted in this study: Feature extraction and pattern ma
 
 The dataset consisted of 180 Beatles songs, 20 Queen songs, 20 songs from the RWC (Real World Computing) pop dataset, and 195 songs from the US-Pop dataset. For training, 5-fold cross validation was used with each group having 99 songs selected randomly. For each fold one group is selected and the other four are used for training. Accuracy is represented by the total duration of correct chords out of the total duration of the dataset~\cite{TaeMin:2014}.
 
-In the first experiment, different combinations of feature extraction and pattern matching are compared to show whether or not model complexity affects performance of the system. They also test the effect of different types of chroma features. The second experiment looks at the pre-filtering techniques of moving filters and beat-synchronization. \todo[inline]{Need to define these and provide more here.} The effect of post-filtering experiment compares the use of different stochastic models. The final experiment uses pre- and post-filtering and again looks at moving filters and beat-synchronization.
+
 
 \todo[inline]{Needs more work}
 
@@ -338,6 +345,8 @@ OR2 \& TH1 & 55.00 & 56.29 & 53.09 & 53.24 & 53.28 & 53.33 & 53.43 \\ \hline
 
 \section{Conclusions}
 
+
+
 \todo[inline]{Look at the components of the highest performing systems and determine the best techniques used for feature extraction and pattern matching. Discuss the effects of preprocessing during feature extraction and using HMMs to eliminate unlikely sequences. All of the research cases use PCP and preprocessing of some kind. Case 1 and 3 use GMMs. Case 2 and 3 use HMMs.}
 
 \todo[inline]{Talk about some of the issues and pitfalls with these and all chord recognition systems. Including dense recordings, extremely fast chord changes, and other types of chords that are not recognized. There are also chords that can only be determined by their context and chords that can be interpreted in more than one way.}
@@ -347,6 +356,8 @@ OR2 \& TH1 & 55.00 & 56.29 & 53.09 & 53.24 & 53.28 & 53.33 & 53.43 \\ \hline
 \todo[inline]{Mention study using online chord database. Genre-specific models.}
 
 \section{Acknowledgements}
+
+Many thanks to Elena Machkasova, Kristen Lamberty, and Scott Steffes for their invaluable feedback.
 
 %\subsection{Math Equations}
 %You may want to display math equations in three distinct styles:
