@@ -61,7 +61,7 @@ Chord recognition systems have been improving and becoming more usable in recent
 \begin{figure*}
 \centering
 \psfig{file=fig2.pdf,width =5.3in}
-\caption{Overview of the chord recognition system used in~\cite{Morman:2006}.}
+\caption{Overview of the chord recognition system used in research case 1~\cite{Morman:2006}.}
 \label{fig:fig2}
 \end{figure*}  
 
@@ -74,21 +74,20 @@ The first step of generating a chord progression from audio data is processing t
 
 \subsubsection{Preprocessing}
 
-In Figure~\ref{fig:fig4} the light areas show where frequencies have been detected, and the dark areas show empty space. It is clear that frequencies other than just the chord tones have been detected because the light areas are not solid white and the dark areas not solid black. The goal of preprocessing is to reduce as much of this background noise as possible from the audio file, in an effort to provide a smooth and clear PCP. 
+In Figure~\ref{fig:fig4} the light areas show where frequencies have been detected, and the dark areas show empty space. It is clear that frequencies other than just the chord tones have been detected because the light areas are not solid white and the dark areas not solid black. The goal of preprocessing is to reduce as much of this background noise as possible from the audio file, in an effort to provide a smooth and clear PCP. Another issue is that musical instruments produce a series of harmonics at higher and lower frequencies than the tone that is played. These tones, called overtones, can confuse feature extraction techniques and need to be removed. These two issues, background noise and overtones, are usually addressed separately.
 
-%Depending on the audio resolution, very low pitches can be hard to distinguish and tend to blur across multiple pitches. Percussion sounds also need to be addressed, especially those that create a pitch such as a bass drum.
-
-Another issue is that musical instruments produce a series of harmonics at higher and lower frequencies than the tone that is played. These tones, called overtones, can confuse feature extraction techniques and need to be removed.
+%Depending on the audio resolution, very low pitches can be hard to distinguish and tend to blur across multiple pitches. Percussion sounds also need to be addressed, especially those that create a pitch such as a bass drum. 
 
 %Preprocessing and pre-/post-filtering are optional steps but all of the systems in this paper use it in some way. The reason is that audio files are not perfect; they contain other tones and frequencies that are unrelated to the chords being played. Musical instruments also produce what are known as overtones, tones that sound above or below the note that was played \cite{TaeMin:2014}. Preprocessing is done to the raw audio file, to remove unwanted noise and frequencies. Pre-filtering is done after the feature extraction step, in order to smooth out the PCP. Post-filtering is done after the chords have been determined by the pattern recognition step, finding the most likely sequence and eliminating unlikely chords.
 
-\todo[inline]{Explain two types of preprocessing, background spectrum and overtone removal. Explain types and how they work and give more info. Explain more about overtones and how they are detected, give more examples of 'other tones'. the sum of sinusoidal tones of integer multiples of the fundamental frequency. Add a figure.}
+~\\
+%\todo[inline]{Explain two types of preprocessing, background spectrum and overtone removal. Explain types and how they work and give more info. Explain more about overtones and how they are detected, give more examples of 'other tones'. the sum of sinusoidal tones of integer multiples of the fundamental frequency. Add a figure.}
 
 \subsubsection{Pitch Class Profile} 
 
 The pitch of a note is measured in two dimensions - height and chroma (pitch class). Height tells which octave a note belongs to, and chroma tells where a note stands within the octave (the name of the note). Height is not a factor in determining chord type because two notes that are an octave apart have the same chroma value. A chromagram, or PCP, is a 12-dimensional vector representation of chroma, representing the intensity of each of the twelve semitones in the chromatic scale, over a period of time. An example of a common PCP, along with the actual progression, can be seen in Figure~\ref{fig:fig4}~\cite{McVicar:2014}. For over a decade PCP has been the most popular way to represent harmonic features for chord recognition. Most new approaches are variations or refinements of this approach \cite{TaeMin:2014}. Modern systems can have many more steps in converting audio to PCP including tuning correction, which compensates for music that is not tuned to standard pitch \textit{A4 = 440 Hz}, and beat-synchronization, which calculates the average pitch between beats to get rid of changes caused by noise and other transients. \cite{McVicar:2014}.
 
-\todo[inline]{Describe them or some of them. Decide between using pitch class and chroma. More detail in paper 1 under feature extraction}
+%\todo[inline]{Describe them or some of them. Decide between using pitch class and chroma. More detail in paper 1 under feature extraction}
 
 \begin{figure}
 \centering
@@ -106,41 +105,41 @@ The pitch of a note is measured in two dimensions - height and chroma (pitch cla
 \textbf{FV3} & PCP & 44100 & 32768 & no & 1 \\ \hline
 \textbf{FV4} & PCP & 44100 & 32768 & yes & 5 \\ \hline
 \end{tabular}
-\caption{Feature Vectors used in isolated chord recognition.}
+\caption{Feature Vectors used in isolated chord recognition in research case 1~\cite{Morman:2006}.}
 \label{tab:tab2}
 \end{table*} 
 
 \subsection{Pattern Matching}
 
-\todo[inline]{Decide between pattern recognition and pattern matching.}
+Almost all chord recognition systems use PCP or some other chroma-based feature extraction technique. What differentiates these systems is the mechanism used to label chords. Generating the chord model against which the PCP will be matched can be done in one of two ways: by hand using musical knowledge, or stochastically, by deriving it from real-world music. The most basic way to model chords is by hand, describing the known note distribution of a chord. An example of a chord template for a C major triad looks like [1 0 0 0 1 0 0 1 0 0 0 0], where each digit left to right follows the chromatic scale starting at C. Using this method, each chord template is created and then tested on each frame of a PCP to find the best fit. 
 
-Almost all chord recognition systems use PCP or some other chroma-based feature extraction technique. What differentiates these systems is the mechanism used to label chords.\todo[inline]{Define chord model.} Generating the chord model against which the PCP will be matched can be done in one of two ways: manually using musical knowledge, or stochastically, by deriving it from real-world music. In a manual system the chroma values being sounded are compared against pre-defined chord templates.\todo[inline]{Define these better.} These two methods are compared by Cho and Bello in  \cite{TaeMin:2014}. Stochastic chord models are more sophisticated and complex. HMMs used to be the method of choice, but many recent systems prefer Gaussian mixture models \cite{TaeMin:2014}.
+Stochastic chord models are more sophisticated and complex. HMMs used to be the method of choice, but many recent systems prefer Gaussian mixture models \cite{TaeMin:2014}.
 
-\todo[inline]{Add sentance describing stocastic chord model system after manual system. Get rid of more sophisticated and complex.}
+\todo[inline]{Need description of stochastic chord models.}
 
 \subsubsection{Hidden Markov Models}\label{main} 
 
-A \textit{hidden Markov model} (HMM) is a statistical model which describes a finite set of states, in this case chords. Transitions between these states are governed by a set of transition probabilities that describe the likelihood of transitioning from one to another \cite{TaeMin:2014}. The Viterbi algorithm then finds the most likely sequence by evaluating the joint probability of the output and all possible chord sequences. HMMs are used in a wide variety of pattern recognition environments such as speech, handwriting, and gesture recognition, as well as in bioinformatics. 
+A \textit{hidden Markov model} (HMM) is a statistical model which describes a finite set of states, in this case chords. Transitions between these states are governed by a set of transition probabilities that describe the likelihood of transitioning from one to another. The Viterbi algorithm then finds the most likely sequence by evaluating the joint probability of the output and all possible chord sequences~\cite{TaeMin:2014}. HMMs are used in a wide variety of pattern recognition environments such as speech, handwriting, and gesture recognition, and bioinformatics. 
 
-\todo[inline]{Need to re-write this section from draft. Include figures for models. find first instance of HMM.}
+%\todo[inline]{Need to re-write this section from draft. Include figures for models. find first instance of HMM.}
 
 \subsubsection{Gaussian Mixture Models}
 
-\textit{Gaussian mixture models} (GMMs) are used in many modern chord recognition systems. A GMM consists of a distribution of weighted Gaussian components that represent descriptions of each chord in the training data.\todo[inline]{Need a better definition} To train these models the PCP from the training data is transposed to all C-based chords (C-major and C-minor). These normalized chords are used to train the C-major and C-minor models, and then re-transposed to the remaining 11 keys~\cite{TaeMin:2014}.
+\textit{Gaussian mixture models} (GMMs) are used in many modern chord recognition systems. A GMM consists of a distribution of weighted components. Different components represent descriptions of each chord in the training data. To train these models, the PCPs from the training data are segmented based on their type; major, minor, or no-chord. These segments are then transposed to all C-based chords (C-major and C-minor). These normalized chords are used to train the C-major and C-minor models, and then re-transposed to the remaining 11 keys~\cite{TaeMin:2014}.
 
-\todo[inline]{Need more here. REWRITE}
+%\todo[inline]{Need more here. REWRITE}
 
 \subsubsection{Support Vector Models}
 
+\todo[inline]{Todo}
+
 \section{Research Cases}
 
-This paper looks at three research cases that involve automatic chord recognition. All of the cases use three common steps in the process: feature extraction, preprocessing, and pattern recognition. Here we will give an overview of each system and the datasets that were used.
+This paper looks at three research cases that involve automatic chord recognition. All of the cases use three common steps in the process: feature extraction, preprocessing, and pattern matching. Here we will give an overview of each system and the datasets that were used.
 
-\todo[inline]{Decide between study and case.}
+\subsection{Case 1: Effects of Proper Signal \\ Processing}
 
-\subsection{Case 1: Effects of Proper Signal Processing}
-
-The first study~\cite{Morman:2006} uses a chord recognition system that begins with a preprocessing block, followed by feature extraction, where PCP is calculated. After this, the signal is segmented along predicted chord boundaries, and then chord labels are assigned to each segment. An overview of this system can been seen in Figure~\ref{fig:fig2}. 
+The first research case~\cite{Morman:2006} uses a chord recognition system that begins with a preprocessing block, followed by feature extraction, where PCP is calculated. After this, the signal is segmented along predicted chord boundaries, and then chord labels are assigned to each segment. An overview of this system can been seen in Figure~\ref{fig:fig2}. 
 
 There are two stages in the preprocessing block, to address background noise and overtones. The first step, Homomorphic Liftering, is a method of separating out the frequencies of musical tones from background and system noise. This is done by finding strong frequency peaks in areas corresponding to the pitch range of the notes. Frequencies above and below a specified range can also be removed to reduce noise. The second step, known as the \textit{Harmonic Product Spectrum} (HPS), is a method which emphasizes frequencies when their overtones are present. HPS is calculated by compressing the spectrum by factors of 1 to R and multiplying the resulting compressed spectra. The resulting output energy is then summed according to pitch class and a PCP is created.
 
@@ -148,7 +147,7 @@ The first step of pattern matching for this system is chord segmentation, where 
 
 %FV1 doesn't use PCP
 
-The next and final step in this system is assigning chord labels to the segments. Given an instance of the PCP for a region of the audio, the most probable chord label is picked from a set of training PCPs. In this study the use of GMMs and SVMs is compared~\cite{Morman:2006}.
+The next and final step in this system is assigning chord labels to the segments. Given an instance of the PCP for a region of the audio, the most probable chord label is picked from a set of training PCPs. In this research case the use of GMMs and SVMs is compared~\cite{Morman:2006}.
 
 \subsubsection{Datasets}
 
@@ -183,7 +182,7 @@ Augmented & Aug. & Aug. & Augmented \\ \hline
 Sus. 4 & - & - & Sus. 4 \\ \hline
 7 Sus. 4 & - & - & 7 Sus. 4 \\ \hline
 \end{tabular}
-\caption{Chord complexity levels used in \cite{Morman:2006}.}
+\caption{Chord complexity levels used in research case 1~\cite{Morman:2006}.}
 \label{tab:tab1}
 \end{table} 
 
@@ -193,7 +192,7 @@ Sus. 4 & - & - & Sus. 4 \\ \hline
 
 For the isolated chords dataset, this system was trained using chords synthesized on a piano, and was tested on chords synthesized on both piano and strings. The dataset was randomly divided with 80\% of the chords used for training and 20\% for testing. Five of these training and testing sets were created and the recognition rates from these were averaged. The overall chord recognition accuracies for GMMs can be seen in table~\ref{tab:tab3} and for piano, and in table~\ref{tab:tab4} for strings. FV4 performed the best with the chords played on strings, and showed the least difference between recognizing piano and string chords \cite{Morman:2006}. The results of classification using SVMs can be seen in Table~\ref{tab:tab7}. Using SVMs clearly outperformed GMMs, with accuracy rates up to 95\% on DS1A. This was not the case however, when SVMs were tested on strings when trained on piano. In this case SVMs actually did not work because an SVM requires knowledge of the type of data in the testing set, so these results were not included.  
 
-For the continuous single-instrument dataset, two parameters of chord segmentation were compared; the number of scatter points (7 scatter points means the partition frame plus 3 frames on each side), and the window length in seconds. As shown in Table~\ref{tab:tab8}, segmentation accuracy of around 90\% was achieved. Melody tones that were not part of the chord made this more difficult than labeling the isolated chords~\cite{Morman:2006}. 
+For the continuous single-instrument dataset, two parameters of chord segmentation were compared; the number of \textit{scatter points} (7 scatter points means the partition frame plus 3 frames on each side), and the window length in seconds. As shown in Table~\ref{tab:tab8}, segmentation accuracy of around 90\% was achieved. Melody tones that were not part of the chord made this more difficult than labeling the isolated chords~\cite{Morman:2006}. 
 
 \begin{table}
 \centering
@@ -250,7 +249,7 @@ For the continuous single-instrument dataset, two parameters of chord segmentati
 
 \subsection{Case 2: HMM Trained with Audio from Symbolic Data}
 
-In the next study \cite{Lee:2006}, symbolic data in Humdrum data format is used to generate training data for an HMM. Humdrum is a software toolkit used for music research. The data is used to generate a chord label file (containing chord names and times), and an audio file, from the same data. Chroma analysis is then performed on the audio file to get a PCP, which is used as input to the trained HMM along with the chord label file. This system is visualized in Figure~\ref{fig:fig1}.
+In the next research case~\cite{Lee:2006}, symbolic data in Humdrum data format is used to generate training data for an HMM. Humdrum is a software toolkit used for music research. The data is used to generate a chord label file (containing chord names and times), and an audio file, from the same data. Chroma analysis is then performed on the audio file to get a PCP, which is used as input to the trained HMM along with the chord label file. This system is visualized in Figure~\ref{fig:fig1}.
 
 A 36-state HMM is used, with each state representing a chord (major, minor, and diminished for each 12 pitches). Once the model parameters are learned, the Viterbi algorithm is applied to find the optimal sequence in a maximum likelihood sense. 
 
@@ -263,7 +262,7 @@ A 36-state HMM is used, with each state representing a chord (major, minor, and 
 \begin{figure}
 \centering
 \psfig{file=fig1.pdf,width =3in}
-\caption{Overview of the HMM trained with audio from symbolic data in~\cite{Lee:2006}.}
+\caption{Overview of the HMM trained with audio from symbolic data in research case 2~\cite{Lee:2006}.}
 \label{fig:fig1}
 \end{figure}
 
@@ -286,36 +285,31 @@ Piano & String Quartet & 79.35 \\ \hline
 String Quartet & String Quartet & 79.76 \\ \hline
 Piano \& Strings & String Quartet & 80.16 \\ \hline
 \end{tabular}
-\caption{Recognition results for all six possible training - test pairs in \cite{Lee:2006}.}
+\caption{Recognition results for all six possible training - test pairs in research case 2~\cite{Lee:2006}.}
 \label{tab:tab5}
 \end{table}
 
 \subsection{Case 3: Importance of Individual Components}
 
-The final study~\cite{TaeMin:2014} consists of four experiments, testing different methods used for each step of the process. The overall recognition system in this case is defined as a feature extraction step and pattern matching step, with optional pre-filtering and post-filtering steps. An overview of the system can been seen in figure~\ref{fig:fig3}.  Pre-filtering is applied to PCPs directly before pattern matching, and consists of averaging frames between beats, yielding a beat-synchronized PCP. Post-filtering is performed after pattern matching, in the context of a HMM, typically using a Viterbi decoder.
+The final research case~\cite{TaeMin:2014} consists of four experiments, testing different methods used for each step of the process. The overall recognition system in this case is defined as a feature extraction step and pattern matching step, with optional pre-filtering and post-filtering steps. In this case preprocessing is part of the feature extraction step. An overview of the system can been seen in figure~\ref{fig:fig3}. Pre-filtering is applied to PCPs directly before pattern matching, and consists of averaging frames between beats, yielding a beat-synchronized PCP. Post-filtering is performed after pattern matching, in the context of a HMM, typically using a Viterbi decoder.
 
+In the first experiment, different combinations of chroma features and chord models are tested to show whether or not model complexity affects performance of the system. The second experiment
 %The final study \cite{TaeMin:2014} compares the most common methods of each step: feature extraction, pattern recognition, and pre/post filtering. This study describes the overall system a little differently than the other two, with preprocessing included in the feature extraction stage, and HMMs included in the post-filtering stage. The pre-filtering stage is where attempts are made to smooth out the PCP. 
 
 %Four experiments were conducted in this study: Feature extraction and pattern matching, effect of pre-filtering, effect of post-filtering, and combined pre- and post-filtering. Each experiment was run on 495 chord annotated pop songs. 
 
 %In the first experiment, different combinations of feature extraction and pattern matching are compared to show whether or not model complexity affects performance of the system. They also test the effect of different types of chroma features. The second experiment looks at the pre-filtering techniques of moving filters and beat-synchronization. \todo[inline]{Need to define these and provide more here.} The effect of post-filtering experiment compares the use of different stochastic models. The final experiment uses pre- and post-filtering and again looks at moving filters and beat-synchronization.
 
-\todo[inline]{decide between chord-annotated and hand marked or define difference.}
-
 \begin{figure}
 \centering
 \psfig{file=fig3.pdf,width =3in}
-\caption{General layout of the chord recognition system used in~\cite{TaeMin:2014}.}
+\caption{General layout of the chord recognition system used in research case 3~\cite{TaeMin:2014}.}
 \label{fig:fig3}
 \end{figure}
 
 \subsubsection{Datasets}
 
-The dataset consisted of 180 Beatles songs, 20 Queen songs, 20 songs from the RWC (Real World Computing) pop dataset, and 195 songs from the US-Pop dataset. For training, 5-fold cross validation was used with each group having 99 songs selected randomly. For each fold one group is selected and the other four are used for training. Accuracy is represented by the total duration of correct chords out of the total duration of the dataset~\cite{TaeMin:2014}.
-
-
-
-\todo[inline]{Needs more work}
+Each of the four experiments in this research case were performed on 180 Beatles songs, 20 Queen songs, 100 songs from the RWC (Real World Computing) pop dataset, and 195 songs from the US-Pop dataset, for a total of 495 songs. The RWC and US-Pop dataset were assigned chord labels by hand, while the Beatles and Queen chord models were generated stochastically. For training, 5-fold cross validation was used with each group having 99 songs selected randomly. For each fold one group is selected and the other four are used for training. Accuracy is represented by the total duration of correct chords out of the total duration of the dataset~\cite{TaeMin:2014}.
 
 \subsubsection{Results}
 
@@ -336,7 +330,7 @@ OR1 \& TH1 & 55.51 & \textbf{58.30} & 57.58 & 57.73 & 57.72 & 57.70 & 57.69 \\ \
 OR1 \& TH2 & 53.24 & 53.83 & 54.66 & 54.67 & 54.00 & 54.03 & 53.55 \\ \hline
 OR2 \& TH1 & 55.00 & 56.29 & 53.09 & 53.24 & 53.28 & 53.33 & 53.43 \\ \hline
 \end{tabular}
-\caption{Average accuracy without filtering (research case 3, experiment 1).}
+\caption{Average accuracy without filtering (research case 3~\cite{TaeMin:2014}, experiment 1).}
 \label{tab:tab6}
 \end{table*}
 
@@ -353,11 +347,13 @@ OR2 \& TH1 & 55.00 & 56.29 & 53.09 & 53.24 & 53.28 & 53.33 & 53.43 \\ \hline
 
 \subsection{Future Work}
 
-\todo[inline]{Mention study using online chord database. Genre-specific models.}
+With the increasing amount of data that is available online, some systems have been developed to scrape online chord databases for training data. The advantage here is having chord data for a very large number of songs without having to generate it. The system in~\cite{McVicar:2010} was able to scrape chord information from \texttt{e-chords.com} for over 75,000 songs.
+
+\todo[inline]{Mention study using online chord database. Genre-specific models. Apps that provide chords for any song.}
 
 \section{Acknowledgements}
 
-Many thanks to Elena Machkasova, Kristen Lamberty, and Scott Steffes for their invaluable feedback.
+Many thanks to Elena Machkasova, KK Lamberty, and Scott Steffes for their invaluable feedback.
 
 %\subsection{Math Equations}
 %You may want to display math equations in three distinct styles:
