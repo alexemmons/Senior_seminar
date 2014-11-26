@@ -111,17 +111,17 @@ The pitch of a note is measured in two dimensions - height and chroma (pitch cla
 
 \subsection{Pattern Matching}
 
-Almost all chord recognition systems use PCP or some other chroma-based feature extraction technique. What differentiates these systems is the mechanism used to label chords. Generating the chord model against which the PCP will be matched can be done in one of two ways: by hand using musical knowledge, or stochastically, by deriving it from real-world music. The most basic way to model chords is by hand, describing the known note distribution of a chord. An example of a chord template for a C major triad looks like [1 0 0 0 1 0 0 1 0 0 0 0], where each digit left to right follows the chromatic scale starting at C. Using this method, each chord template is created and then tested on each frame of a PCP to find the best fit. 
+Almost all chord recognition systems use PCP or some other chroma-based feature extraction technique. What differentiates these systems is the mechanism used to label chords. Generating the chord model against which the PCP will be matched can be done in one of two ways: by hand using musical knowledge, or stochastically, by deriving it from real-world music. The most basic way to model chords is by hand, describing the known note distribution of a chord. An example of a chord template (individal chord model) for a C major triad looks like [1 0 0 0 1 0 0 1 0 0 0 0], where each digit left to right follows the chromatic scale starting at C. Using this method, each chord template is created and then tested on each frame of a PCP to find the best fit. The problem with this method is that a lot of times chord tones are not all played at the same time or held for the same duration.  More sophisticated chord models are generated stochastically, by defining probability distributions for each chord type that a system can recognize.  
 
-Stochastic chord models are more sophisticated and complex. HMMs used to be the method of choice, but many recent systems prefer Gaussian mixture models \cite{TaeMin:2014}.
+%Stochastic chord models are more sophisticated and complex. HMMs used to be the method of choice, but many recent systems prefer Gaussian mixture models \cite{TaeMin:2014}.
 
-\todo[inline]{Need description of stochastic chord models.}
+%\todo[inline]{Need description of stochastic chord models.}
 
 \subsubsection{Hidden Markov Models}\label{main} 
 
-A \textit{hidden Markov model} (HMM) is a statistical model which describes a finite set of states, in this case chords. Transitions between these states are governed by a set of transition probabilities that describe the likelihood of transitioning from one to another. The Viterbi algorithm then finds the most likely sequence by evaluating the joint probability of the output and all possible chord sequences~\cite{TaeMin:2014}. HMMs are used in a wide variety of pattern recognition environments such as speech, handwriting, and gesture recognition, and bioinformatics. 
+A \textit{hidden Markov model} (HMM) is a statistical model which describes a finite set of states, in this case chords. Transitions between these states are governed by a set of transition probabilities that describe the likelihood of transitioning from one to another. The Viterbi algorithm finds the most likely sequence of these states by evaluating the joint probability of the output and all possible chord sequences, reducing unlikely transitions~\cite{TaeMin:2014}. HMMs are used in a wide variety of pattern recognition environments such as speech, handwriting, and gesture recognition, and bioinformatics. 
 
-%\todo[inline]{Need to re-write this section from draft. Include figures for models. find first instance of HMM.}
+%\todo[inline]{Need to re-write this section from draft. Include figures for models. find first instance of HMM. More info in overview of state of the art.}
 
 \subsubsection{Gaussian Mixture Models}
 
@@ -135,7 +135,7 @@ A \textit{hidden Markov model} (HMM) is a statistical model which describes a fi
 
 \section{Research Cases}
 
-This paper looks at three research cases that involve automatic chord recognition. All of the cases use three common steps in the process: feature extraction, preprocessing, and pattern matching. Here we will give an overview of each system and the datasets that were used.
+This paper looks at three research cases that involve automatic chord recognition. All of these cases include feature extraction, and pattern matching. Here we will give an overview of each system, the datasets that were used, and a summary of the results.
 
 \subsection{Case 1: Effects of Proper Signal \\ Processing}
 
@@ -291,9 +291,9 @@ Piano \& Strings & String Quartet & 80.16 \\ \hline
 
 \subsection{Case 3: Importance of Individual Components}
 
-The final research case~\cite{TaeMin:2014} consists of four experiments, testing different methods used for each step of the process. The overall recognition system in this case is defined as a feature extraction step and pattern matching step, with optional pre-filtering and post-filtering steps. In this case preprocessing is part of the feature extraction step. An overview of the system can been seen in figure~\ref{fig:fig3}. Pre-filtering is applied to PCPs directly before pattern matching, and consists of averaging frames between beats, yielding a beat-synchronized PCP. Post-filtering is performed after pattern matching, in the context of a HMM, typically using a Viterbi decoder.
+The final research case~\cite{TaeMin:2014} consists of four experiments, testing different methods used for each step of the process. The overall recognition system in this case is defined as a feature extraction step and pattern matching step, with optional pre-filtering and post-filtering steps. In this case preprocessing is part of the feature extraction step. An overview of the system can been seen in figure~\ref{fig:fig3}. Pre-filtering is applied to PCPs directly before pattern matching, and consists of averaging frames between beats which yields a beat-synchronized PCP. Post-filtering is performed after pattern matching, in the form of an HMM using a Viterbi decoder.
 
-In the first experiment, different combinations of chroma features and chord models are tested to show whether or not model complexity affects performance of the system. The second experiment
+In the first experiment, different combinations of chroma features and chord models are tested to show whether or not model complexity affects performance of the system. The second experiment looks at the effect of different pre-filtering techniques, while the third looks at the effect of post-filtering. The fourth experiment uses both pre-filtering and post-filtering, in all possible parameter combinations.
 %The final study \cite{TaeMin:2014} compares the most common methods of each step: feature extraction, pattern recognition, and pre/post filtering. This study describes the overall system a little differently than the other two, with preprocessing included in the feature extraction stage, and HMMs included in the post-filtering stage. The pre-filtering stage is where attempts are made to smooth out the PCP. 
 
 %Four experiments were conducted in this study: Feature extraction and pattern matching, effect of pre-filtering, effect of post-filtering, and combined pre- and post-filtering. Each experiment was run on 495 chord annotated pop songs. 
@@ -303,7 +303,7 @@ In the first experiment, different combinations of chroma features and chord mod
 \begin{figure}
 \centering
 \psfig{file=fig3.pdf,width =3in}
-\caption{General layout of the chord recognition system used in research case 3~\cite{TaeMin:2014}.}
+\caption{General layout of the chord recognition system used in research case 3~\cite{TaeMin:2014}. In this case preprocessing is included in the feature extraction step.}
 \label{fig:fig3}
 \end{figure}
 
@@ -334,12 +334,10 @@ OR2 \& TH1 & 55.00 & 56.29 & 53.09 & 53.24 & 53.28 & 53.33 & 53.43 \\ \hline
 \label{tab:tab6}
 \end{table*}
 
-\todo[inline]{Need to add the results for pre and post filtering experiments.}
+\todo[inline]{Need to add the results for pre and post filtering experiments. Explain table 8 better. Possibly combine all 4 experiments into one table, with the highest accuracy achieved in each and how.}
 
 
 \section{Conclusions}
-
-
 
 \todo[inline]{Look at the components of the highest performing systems and determine the best techniques used for feature extraction and pattern matching. Discuss the effects of preprocessing during feature extraction and using HMMs to eliminate unlikely sequences. All of the research cases use PCP and preprocessing of some kind. Case 1 and 3 use GMMs. Case 2 and 3 use HMMs.}
 
@@ -349,7 +347,7 @@ OR2 \& TH1 & 55.00 & 56.29 & 53.09 & 53.24 & 53.28 & 53.33 & 53.43 \\ \hline
 
 With the increasing amount of data that is available online, some systems have been developed to scrape online chord databases for training data. The advantage here is having chord data for a very large number of songs without having to generate it. The system in~\cite{McVicar:2010} was able to scrape chord information from \texttt{e-chords.com} for over 75,000 songs.
 
-\todo[inline]{Mention study using online chord database. Genre-specific models. Apps that provide chords for any song.}
+\todo[inline]{Need to add: Genre-specific models. Apps that provide chords for any song.}
 
 \section{Acknowledgements}
 
