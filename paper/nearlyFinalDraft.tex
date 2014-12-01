@@ -119,9 +119,20 @@ Almost all chord recognition systems use PCP or some other chroma-based feature 
 
 \subsubsection{Hidden Markov Models}\label{main} 
 
-A \textit{hidden Markov model} (HMM) is a statistical model which describes a finite set of states, in this case chords. Transitions between these states are governed by a set of transition probabilities that describe the likelihood of transitioning from one to another. The Viterbi algorithm finds the most likely sequence of these states by evaluating the joint probability of the output and all possible chord sequences, reducing unlikely transitions~\cite{TaeMin:2014}. HMMs are used in a wide variety of pattern recognition environments such as speech, handwriting, gesture recognition, and bioinformatics. 
+A \textit{hidden Markov model} (HMM) is a statistical model which describes a finite set of states, in this case chords. Since we do not know the chord progression for a given audio file, these states are considered to be hidden. Transitions between these states are given probabilities that describe the likelihood of transitioning from one state (chord) to another. In the research cases reviewed in this paper, \textit{supervised} HMMs are used, meaning that these probabilities are~\textit{learned} from a set of labeled training data (audio that has been assigned chord labels by hand or some other system). The chord transition probabilities are learned for a chord by dividing the number of transitions to each chord by the total number of transitions from that chord. This is done for each chord in the training data. An example of transition probabilities from the C major chord can be seen in Figure~\ref{fig:fig5}. \\ \\
 
-\todo[inline]{Need to explain how training works in a more general sense.}
+\begin{figure}
+\centering
+\psfig{file=transitionProbabilities.pdf,width =3in}
+\caption{An example of transition probabilities from the C major triad, learned from training data.}
+\label{fig:fig5}
+\end{figure}
+
+%A matrix is created that shows the number of transitions from each chord in the training data to each other possible chord, including itself.
+
+%Transitions between these states are governed by a set of transition probabilities that describe the likelihood of transitioning from one to another. The Viterbi algorithm finds the most likely sequence of these states by evaluating the joint probability of the output and all possible chord sequences, reducing unlikely transitions~\cite{TaeMin:2014}. HMMs are used in a wide variety of pattern recognition environments such as speech, handwriting, gesture recognition, and bioinformatics. 
+
+%\todo[inline]{Need to explain how training works in a more general sense.}
 
 %\todo[inline]{Need to re-write this section from draft. Include figures for models. find first instance of HMM. More info in overview of state of the art.}
 
