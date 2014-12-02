@@ -113,7 +113,7 @@ For over a decade PCP has been the most popular way to represent harmonic featur
 
 \subsection{Pattern Matching}
 
-Almost all chord recognition systems use PCP or some other chroma-based feature extraction technique. What differentiates these systems is the mechanism used to assign the chord labels. Generating the chord model against which the PCP will be matched can be done either by hand (using musical knowledge), or stochastically (by deriving it from real-world music). The most basic way to model chords is by hand, describing the known note distribution of a chord. An example of a binary chord template (individal chord model) for a C major \textit{triad} (chord containing 3 notes) would look like [1 0 0 0 1 0 0 1 0 0 0 0], where each digit left to right follows the chromatic scale starting at C. A 1 indicates the presence of a note and 0 represents the absence of a note. Using this method, each chord template is created and then tested on each \textit{frame} (time point ~25ms, depending on the system) of a PCP, to find the best fit. The problem with this method is that a lot of times chord tones are not all played at the same time or held for the same duration. More sophisticated chord models are generated stochastically, by defining probability distributions for each chord type that a system can recognize~\cite{TaeMin:2014}.  
+Almost all chord recognition systems use PCP or some other chroma-based feature extraction technique. What differentiates these systems is the mechanism used to assign the chord labels. Generating the chord model against which the PCP will be matched can be done either by hand (using musical knowledge), or stochastically (by deriving it from real-world music). The most basic way to model chords is by hand, describing the known note distribution of a chord. An example of a binary chord template (individal chord model) for a C major \textit{triad} (chord containing 3 notes) would look like [1 0 0 0 1 0 0 1 0 0 0 0], where each digit left to right follows the chromatic scale starting at C. A 1 indicates the presence of a note and 0 represents the absence of a note. Using this method, each chord template is created and then tested on each \textit{frame} (time point around 25ms, depending on the system) of a PCP, to find the best fit. The problem with this method is that a lot of times chord tones are not all played at the same time or held for the same duration. More sophisticated chord models are generated stochastically, by defining probability distributions for each chord type that a system can recognize~\cite{TaeMin:2014}.  
 
 %Stochastic chord models are more sophisticated and complex. HMMs used to be the method of choice, but many recent systems prefer Gaussian mixture models \cite{TaeMin:2014}.
 
@@ -127,7 +127,7 @@ A \textit{hidden Markov model} (HMM) is a statistical model which describes a fi
 
 \begin{figure}
 \centering
-\psfig{file=transitionProbabilities.pdf,width =3in}
+\psfig{file=transitionProbabilities.pdf,width =2.5in}
 \caption{An example of transition probabilities from the C major triad, learned from training data.}
 \label{fig:fig5}
 \end{figure}
@@ -142,18 +142,18 @@ A \textit{hidden Markov model} (HMM) is a statistical model which describes a fi
 
 \subsubsection{Gaussian Mixture Models}
 
-In a \textit{Gaussian mixture model} (GMM), more detailed models for each chord type are created by averaging multiple PCPs for that type. This is done for each chord type for each note. Multiple Gaussian \textit{components} are also used, which represent different variations of the same chord (i.e., chords with notes excluded or doubled up), providing a more accurate fit. The fit of a frame is measured by the likelihood of a model for that frame. 
+In a \textit{Gaussian mixture model} (GMM), more detailed models for each chord type are created by averaging multiple PCPs for that type. This is done for each chord type for each of the 12 notes. Multiple Gaussian \textit{components} are also used, which represent different variations of the same chord (i.e., chords with notes excluded or doubled up), providing a more accurate fit. The fit of a frame is measured by the likelihood of a model for that frame. 
 
 %The number of PCPs used to calculate the average is the number of Gaussian components. Models that are created using more than one component are known as GMMs. 
 
-For GMM training, PCPs from the training data are segmented by chord (i.e., 12 major, 12 minor, depending on what chords are being recognized). To increase the number of training samples, all PCP values for these segments are rotated so that the \textit{root} (name) is C. These segments are then averaged to create models for C-major and C-minor chords, which are then copied and shifted for the remaining 11 keys~\cite{McVicar:2014}.
+For GMM training, PCPs from the training data are segmented by chord type (i.e., 12 major, 12 minor, depending on what chords are being recognized). To increase the number of training samples, all PCP values for these segments are rotated so that the \textit{root} (name) is C. These segments are then averaged to create models for C-major and C-minor chords, which are then copied and shifted for the remaining 11 keys~\cite{McVicar:2014}.
 
 
 %\textit{Gaussian mixture models} (GMMs) are used in many modern chord recognition systems. A GMM consists of a distribution of weighted components. Different Gaussian components represent descriptions of each chord in the training data. To train these models, the PCPs from the training data are segmented based on their type; major, minor, or no-chord. These segments are then transposed to all C-based chords (C-major and C-minor). These normalized chords are used to train the C-major and C-minor models, and then re-transposed to the remaining 11 keys~\cite{TaeMin:2014}.
 
-\subsubsection{Support Vector Models}
+\subsubsection{Support Vector Machines}
 
-\textit{Support Vector Models} (SVMs) are another type of supervised learning model used for pattern matching. Given a set of labeled training data, SVMs assign labels to segments of the test data. A full explanation of SVMs is outside the scope of this paper, as they are only used in one research case for comparison. Many systems use existing tools for SVM classification.
+\textit{Support Vector Machines} (SVMs) are another type of supervised learning model used for pattern matching. Given a set of labeled training data, SVMs assign labels to segments of the test data. A full explanation of SVMs is outside the scope of this paper, as they are only used in one research case for comparison. Many systems use existing tools for SVM classification.
 
 \section{Research Cases}
 
@@ -164,7 +164,7 @@ This paper looks at three research cases that involve automatic chord recognitio
 
 The first research case~\cite{Morman:2006} uses a chord recognition system that begins with a preprocessing block, followed by feature extraction, where the PCP is calculated. After this, the signal is segmented along predicted chord boundaries, and then chord labels are assigned to each segment (pattern matching). An overview of this system can been seen in Figure~\ref{fig:fig2}. 
 
-There are two stages in the preprocessing block, to address background noise and overtones. The first step, Homomorphic Liftering, is a method of separating out the frequencies of musical tones from background and system noise. This is done by finding strong frequency peaks in areas corresponding to the pitch range of the notes. Frequencies above and below a specified range can also be removed to reduce noise. The second step, known as the \textit{Harmonic Product Spectrum} (HPS), is a method which emphasizes frequencies when their overtones are present. HPS is calculated by compressing the spectrum by factors of 1 to R (ex. 1:2 compression ratio) and multiplying the resulting compressed spectra. The resulting output energy is then summed according to pitch class before a PCP is created.
+There are two stages in the preprocessing block, to address background noise and overtones. The first step, Homomorphic Liftering, is a method of separating out the frequencies of musical tones from background and system noise. This is done by finding strong frequency peaks in areas corresponding to the pitch range of the notes. Frequencies above and below a specified range can also be removed to reduce noise. The second step, known as the \textit{Harmonic Product Spectrum} (HPS), is a method which emphasizes frequencies when their overtones are present. HPS is calculated by compressing the spectrum by factors of 1 to R (i.e., 1:2 compression ratio) and multiplying the resulting compressed spectra. The resulting output energy is then summed according to pitch class before a PCP is created.
 
 %\todo[inline]{Explain HPS better.}
 
@@ -172,19 +172,19 @@ The first step of pattern matching for this system is chord segmentation, where 
 
 %FV1 doesn't use PCP
 
-The next and final step in this system is assigning chord labels to the segments. Given an instance of the PCP for a region of the audio, the most probable chord label is picked from a set of training PCPs. In this research case the use of GMMs and \textit{Support Vector Models} (SVMs) are compared for classification. For SVM classification, a tool called the OSU SVM Classifier MATLAB Toolbox was used (as explained in~\cite{Morman:2006}).
+The next and final step in this system is assigning chord labels to the segments. Given an instance of the PCP for a region of the audio, the most probable chord label is picked from a set of training PCPs. In this research case the use of GMMs and SVMs are compared for classification. For SVM classification, a tool called the OSU SVM Classifier MATLAB Toolbox was used (as explained in~\cite{Morman:2006}).
 
 \subsubsection{Datasets}
 
-In this experiment \textit{Musical Instrument Digital Interface} (MIDI) data was used to create the audio. Two datasets were used: one of isolated chords synthesized on piano and strings, and one of continuous single-instrument music synthesized on piano. 
+In this case \textit{Musical Instrument Digital Interface} (MIDI) data was used to create the audio. Two datasets were used: one of isolated chords synthesized on piano and strings, and one of continuous single-instrument music synthesized on piano. 
 
-The isolated chord dataset consisted of 7790 chords and inversions (where the notes are stacked in a different order). Three chord complexity levels were tested, labeled DS1, DS2, and DS3 (seen in Table~\ref{tab:tab1}). DS1 involved the four common triad types (major, minor, augmented, and diminished), across all 12 notes. No other chords were used in DSA. DS2 added variations of the \textit{7th chord} (chords containing four notes): major 7th, minor 7th, dominant 7th, fully diminished 7th, and half diminished 7th. In DS3 all 11 different chord types that the system could recognize were used.
+The isolated chord dataset consisted of 7790 chords and inversions (where the notes are stacked in a different order). Three chord complexity levels were tested, labeled DS1, DS2, and DS3 (seen in Table~\ref{tab:tab1}). DS1 involved the four common triad types (major, minor, augmented, and diminished), across all 12 notes. No other chords were used in DS1. DS2 added variations of the \textit{7th chord} (chords containing four notes): major 7th, minor 7th, dominant 7th, fully diminished 7th, and half diminished 7th. In DS3 all 11 different chord types that the system could recognize were used.
 
 Four \textit{Feature Vectors}~(FV), or combinations of methods used for feature extraction, were compared on each of these complexity levels, seen in Table~\ref{tab:tab2}. FV1 started with preprocessing using homomorphic liftering with a lower cutoff of 30Hz and upper frequency cutoff of 4kHz, then computing HPS with a compression ratio R = 5. Instead of PCP, FV1 uses an 84 dimensional vector (representing 7 octaves with 12 notes per octave). The hypothesis was that this would provide more information because the octaves weren't flattened down to one. FV2 had a lower sampling rate (audio quality), shorter \textit{Fast Fourier Transform}~(FFT) window length (used in converting audio to frequency domain), and no preprocessing was performed on the audio signal. This feature vector was chosen to match a previous system that was being comparing against. FV3 increases the sample rate and FFT, but still leaves out preprocessing. FV4 introduces preprocessing using the same homomorphic liftering and HPS as FV1.
 
 %\todo[inline]{Need more info here. Define/name column headers. Explain table 2 and use the same terminology here.}
 
-The continuous single-instrument audio dataset consisted of 50 hymn verses selected from the Trinity Hymnal, with 40 used for training and 10 used for testing. Labels similar to DS3 were used, with the exception of 7 Sus. 4, Full Dim., and Half Dim. chords, as they were not common in the dataset. FV4 was used as the feature vector~\cite{Morman:2006}. 
+The continuous single-instrument audio dataset consisted of 50 hymn verses selected from the Trinity Hymnal, a MIDI collection of 761 hymns, synthesized on piano. 40 were used for training and 10 for testing. Labels similar to DS3 were used, with the exception of 7 Sus. 4, Full Dim., and Half Dim. chords, as they were not common in the dataset. FV4 was used as the feature vector~\cite{Morman:2006}. 
 
 %In the experiments two pattern recognition methods are compared: GMMs and Support Vector Machines (SVM). For SVM classification, the OSU SVM Classifier MATLAB Toolbox was used. 
 
@@ -296,7 +296,7 @@ Two training datasets were used: the first consisted of 81 solo piano pieces by 
 
 \subsubsection{Results}
 
-The results of these experiments can be seen in Table~\ref{tab:tab5}. The recognition rate was highest for the combined training dataset, at 80\%, although the difference is not significant. Further analysis on the results showed that the highest error came from non-chord tones in the melody, especially in faster pieces. This is because the analysis window would span over multiple chord changes, which confused the system. Other issues were caused by the system treating 7th chords the same as triads because 7th chords contain two triads.
+The results of the experiments in this case can be seen in Table~\ref{tab:tab5}. The recognition rate was highest for the combined training dataset, at 80\%, although the difference is not significant. Further analysis on the results showed that the highest error came from non-chord tones in the melody, especially in faster pieces. This is because the analysis window would span over multiple chord changes, which confused the system. Other issues were caused by the system treating 7th chords the same as triads because 7th chords contain two triads.
 
 \begin{table}[h]
 \centering
@@ -386,7 +386,7 @@ In the first experiment, no filtering was applied during the process. This exper
 
 The highest accuracy that we see in this paper was around 95\% for the isolated chord dataset using SVMs in~\cite{Morman:2006}. This is more of a proof of concept since these systems are aimed at providing chord data for an entire song. If we look at the results of all experiments tested on continuous music, we see that the highest accuracy achieved was around 88\% for the continuous music dataset in~\cite{Morman:2006}. The components used in this experiment were: preprocessing using homomorphic lifering and HPS with a ratio of R = 5, chord segmentation using SVMs, and chord recognition using SVMs. This was using a relatively small dataset, they mention in~\cite{Morman:2006} that the training procedure for SVMs is very complex with large amounts of data. This implies that the system used for chord recognition is somewhat dependent on the dataset that is being tested. Systems can be tailored specifically to the type of instrument and chords that are present in the dataset.
 
-There are still many issues and pitfalls with these and all chord recognition systems. Music with a lot of different instruments, fast chord changes, and types of chords that are not recognized can cause significant problems if they are not expected. The pattern matching techniques in this paper assume that individual chords are independent of each other, but in real-world music some chords can only be labeled correctly by the context of the surrounding chords~\cite{TaeMin:2014}. An example is a secondary chord, which is borrowed from another key. These chords would be given a chord label that is not in the key of the song, rather than the secondary label that would be applied by hand. Detecting these and other non-regular chords would be very difficult for these systems, as they only recognize the chords that they are designed for.    
+There are still many issues and pitfalls with these and all chord recognition systems. Music that has a lot of different instruments, fast chord changes, and types of chords that are not recognized can cause significant problems if they are not expected. The pattern matching techniques in this paper assume that individual chords are independent of each other, but in real-world music some chords can only be labeled correctly by the context of the surrounding chords~\cite{TaeMin:2014}. An example is a secondary chord, which is borrowed from another key. These chords would be given a chord label that is not in the key of the song, rather than the secondary label that would be applied by hand. Detecting these and other non-regular chords would be very difficult for these systems, as they only recognize the chords that they are designed for.    
 
 %\todo[inline]{Look at the components of the highest performing systems and determine the best techniques used for feature extraction and pattern matching. Discuss the effects of preprocessing during feature extraction and using HMMs to eliminate unlikely sequences. All of the research cases use PCP and preprocessing of some kind. Case 1 and 3 use GMMs. Case 2 and 3 use HMMs.}
 
@@ -394,7 +394,7 @@ There are still many issues and pitfalls with these and all chord recognition sy
 
 \subsection{Future Work}
 
-With the increasing amount of data that is available online, some systems have been developed that scrape online databases of songs that have already been labeled to use for training data. The advantage here is having a large amount of labeled chord data without having to generate it. The system in~\cite{McVicar:2010} was able to scrape chord information from \texttt{e-chords.com} for over 75,000 songs. There are also genre-specific models, which account for different chord transition probabilities in different genres of music. These models can also be used to identify genre by testing with all genre models and selecting the one with the best result~\cite{McVicar:2014}. Progress is being made in this area, including mobile apps that can provide chord data for audio captured with the microphone.
+With the increasing amount of data that is available online, some systems have been developed that scrape online databases of songs that have already been labeled to use for training data. The advantage here is having a large amount of labeled chord data without having to generate it. The system in~\cite{McVicar:2010} was able to scrape chord information from \texttt{e-chords.com} for over 75,000 songs. There are also genre-specific models, which account for different chord transition probabilities in different genres of music. These models can also be used to identify genre by testing with all of the genre models and selecting the one with the best result~\cite{McVicar:2014}. Progress is being made in this area, including mobile apps that can provide chord data for audio captured with the microphone.
 
 %\todo[inline]{Will be adding a little more here, possibly moving this section before Conclusion.}
 
